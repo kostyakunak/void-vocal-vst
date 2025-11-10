@@ -1,0 +1,71 @@
+# Build directories
+Build/
+build/
+*.xcodeproj/
+*.xcworkspace/
+
+# Compiled files
+*.o
+*.a
+*.dylib
+*.so
+*.vst3
+*.component
+*.app
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+*.cmake
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Temporary files
+*.tmp
+*.log
+*.bak
+
+# Word documents and temporary files
+*.docx
+~$*
+*.doc
+
+# Archives
+*.zip
+*.tar
+*.tar.gz
+*.rar
+*.7z
+
+# Large files (use git-lfs if needed)
+*.dmg
+*.pkg
+*.iso
+
+# Media files (large)
+*.wav
+*.aif
+*.mp3
+*.flac
+*.m4a
+*.mov
+*.mp4
+*.avi
+
+# Sample libraries and presets (large)
+*.sf2
+*.sfz
+*.nkm
+*.nki
+
