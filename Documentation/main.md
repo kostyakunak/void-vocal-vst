@@ -1455,7 +1455,7 @@ VØID Engine не имитирует акустику --- он **создаёт 
 - Space: простой реверб (juce::dsp::Reverb).
 - Motion: пан/gain LFO с параметр-сглаживанием.
 - Spectral: air-shelf/tilt, лёгкий exciter (по желанию).
-- PsychoCore #1: **Binaural Flow** (Iceberg) --- L/R задержки ±0.3--0.6 мс с медленным LFO.
+- PsychoCore #1: **Binaural Flow** (Iceberg) --- фазовая модуляция L/R (IPD, без ITD) с медленным LFO (0.03--0.08 Гц), фазовый сдвиг 5--10 градусов.
 - PsychoCore #2: **Harmonic Glide** (Platina) --- RMS-follower → микро-сдвиг гармоник (до 3 центов).
 
 **Проверка:**
