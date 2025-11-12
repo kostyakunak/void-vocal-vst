@@ -706,11 +706,10 @@ if __name__ == "__main__":
       "tolerance_db": 0.5,
       "description": "Область воздействия: только 5–12 кГц"
     },
-    "binaural_delay": {
-      "target_range_ms": [0.05, 0.15],
-      "max_ms": 0.2,
+    "binaural_phase": {
+      "phase_shift_degrees": [5, 10],
       "target_band": [5000, 12000],
-      "description": "Бинауральная задержка: 0.05–0.15 мс RMS"
+      "description": "Бинауральная фазовая модуляция (IPD): 5–10 градусов, БЕЗ задержек времени (ITD)"
     },
     "lfo_modulation": {
       "target_range_hz": [0.03, 0.1],
@@ -809,7 +808,7 @@ if __name__ == "__main__":
 
 Автотесты:
 - tests/test_glass.py с офлайн-рендером 5 голосовых сэмплов
-- Метрики: frequency_band, binaural_delay, lfo_modulation, mono_compatibility, 
+- Метрики: frequency_band, binaural_phase, lfo_modulation, mono_compatibility, 
   spectral_centroid, sibilants, lufs
 - HTML отчёт с таблицами и графиками
 - A/B WAV файл (равная громкость)
@@ -1037,11 +1036,11 @@ if __name__ == "__main__":
       "description": "Предзадержка: 80–120 мс"
     },
     "binaural_flow": {
-      "delay_range_ms": [0.05, 0.15],
-      "max_delay_ms": 0.2,
-      "lfo_range_hz": [0.03, 0.1],
+      "phase_shift_degrees": [5, 10],
+      "lfo_range_hz": [0.03, 0.08],
       "target_band": [0, 20000],
-      "description": "Binaural Flow: задержка 0.05–0.15 мс, LFO 0.03–0.1 Гц"
+      "high_freq_band": [5000, 12000],
+      "description": "Binaural Flow: фазовая модуляция (IPD) 5–10 градусов, LFO 0.03–0.08 Гц, БЕЗ задержек времени (ITD)"
     },
     "mono_compatibility": {
       "threshold": 0.6
