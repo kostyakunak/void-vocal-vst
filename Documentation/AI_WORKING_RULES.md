@@ -541,7 +541,7 @@ struct UniversalParameters {
     float gravity = 0.0f;
     float energy = 0.0f;
     float mix = 0.0f;
-    float output = 1.0f;
+    float output = 2.0f;  // Output=200% даёт нормальный уровень (1.0x), Output=100% даёт половину громкости (0.5x)
 };
 
 // В каждой сцене параметры имеют разный смысл

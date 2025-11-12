@@ -18,6 +18,7 @@
 #include "DSP/DynamicLayer.h"
 #include "DSP/MotionMod.h"
 #include "DSP/BinauralFlow.h"
+#include "DSP/HarmonicGlide.h"
 
 //==============================================================================
 /** As the name suggest, this class does the actual audio processing. */
@@ -111,6 +112,7 @@ private:
     DynamicLayer dynamicLayer;
     MotionMod motionMod;
     BinauralFlow binauralFlow;  // Психоакустический кирпич для Iceberg
+    HarmonicGlide harmonicGlide;  // Психоакустический кирпич для Platina
     
     juce::dsp::ProcessSpec processSpec;
 
@@ -205,11 +207,16 @@ void JuceDemoPluginAudioProcessor::process (juce::AudioBuffer<FloatType>& buffer
         binauralFlow.setDepth (depthValue);
         binauralFlow.setGhost (ghostValue);
         
+        // Update HarmonicGlide parameters (module will smooth internally)
+        harmonicGlide.setEnergy (energyValue);  // Чувствительность к громкости
+        harmonicGlide.setFlow (flowValue);      // Скорость реакции
+        
         // Process through modules
-        // Processing chain: Granular -> Spectral -> BinauralFlow -> Space -> Dynamic -> Motion
+        // Processing chain: Granular -> Spectral -> BinauralFlow -> HarmonicGlide -> Space -> Dynamic -> Motion
         granularEngine.process (floatBuffer);
         spectralEngine.process (floatBuffer);
         binauralFlow.process (floatBuffer);  // Психоакустический кирпич для Iceberg
+        harmonicGlide.process (floatBuffer);  // Психоакустический кирпич для Platina
         spaceEngine.process (floatBuffer);
         dynamicLayer.process (floatBuffer);
         motionMod.process (floatBuffer);

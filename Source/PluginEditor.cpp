@@ -46,7 +46,15 @@ JuceDemoPluginAudioProcessorEditor::JuceDemoPluginAudioProcessorEditor (JuceDemo
     mixSlider.setTextValueSuffix ("%");
     
     // Output slider uses 0-200% range (0-2.0)
-    outputSlider.setTextValueSuffix ("x");
+    // Display as percentage: 0-200%
+    outputSlider.setTextValueSuffix ("%");
+    // Custom value-to-text function to show 0-200% instead of 0-2.0
+    outputSlider.textFromValueFunction = [](double value) {
+        return juce::String (static_cast<int> (value * 100.0));
+    };
+    outputSlider.valueFromTextFunction = [](const juce::String& text) {
+        return text.getDoubleValue() / 100.0;
+    };
     
     // Clarity slider uses -50% to +50% range
     claritySlider.setTextValueSuffix ("%");
@@ -153,7 +161,7 @@ void JuceDemoPluginAudioProcessorEditor::paint (juce::Graphics& g)
     g.setFont (juce::FontOptions (18.0f).withStyle ("bold"));
     
     // Build version string with date for tracking changes
-    auto versionText = UTF8_STRING("VØID Engine v1.4.6 - Build ") + 
+    auto versionText = UTF8_STRING("VØID Engine v1.6.0 - Build ") + 
                        juce::Time::getCompilationDate().toString (true, true, false, true);
     
     g.drawText (versionText, titleArea.reduced (12, 0),
@@ -273,9 +281,11 @@ void JuceDemoPluginAudioProcessorEditor::setupHelpButtons()
             "• При 100% — заметное «дыхание океана» (LFO ~0.08 Гц, цикл ~12.5 сек)\n\n"
             "Влияет на:\n"
             "• BinauralFlow: скорость LFO для фазовой модуляции (0.03-0.08 Гц)\n"
+            "• HarmonicGlide: скорость реакции на изменения громкости (быстрее при Flow > 50%)\n"
             "• MotionMod: частота LFO для панорамы/громкости (требует Energy > 0%)\n"
             "• SpaceEngine: ширина стерео-поля реверба\n\n"
-            "💡 BinauralFlow работает БЕЗ панорамы — создаёт «дыхание пространства» через фазовые сдвиги.\n\n"
+            "💡 BinauralFlow работает БЕЗ панорамы — создаёт «дыхание пространства» через фазовые сдвиги.\n"
+            "💡 HarmonicGlide: Flow = 0% → медленная реакция, Flow = 100% → быстрая реакция на динамику.\n\n"
             "Создаёт ощущение «плывущего пространства», как дыхание холода."
         )
     );
@@ -288,7 +298,10 @@ void JuceDemoPluginAudioProcessorEditor::setupHelpButtons()
             "• При 0% — нет движения (даже если Flow > 0%)\n"
             "• При 50% — умеренное движение панорамы и громкости\n"
             "• При 100% — максимальная амплитуда движения\n\n"
-            "Влияет на: силу модуляции панорамы (±28%) и громкости (±10%), минимальную частоту LFO.\n\n"
+            "Влияет на:\n"
+            "• HarmonicGlide: чувствительность к громкости (амплитуда питч-шифта ±2-3 цента)\n"
+            "• MotionMod: силу модуляции панорамы (±8%) и громкости (±3%), минимальную частоту LFO\n\n"
+            "💡 HarmonicGlide: Energy = 0% → эффект выключен, Energy = 100% → максимальный сдвиг гармоник.\n"
             "💡 Работает даже при Flow = 0% — создаёт очень медленное движение.\n\n"
             "Максимальный эффект: Flow = 100% + Energy = 100%."
         )

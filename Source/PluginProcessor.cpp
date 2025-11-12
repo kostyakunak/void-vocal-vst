@@ -24,7 +24,7 @@ JuceDemoPluginAudioProcessor::JuceDemoPluginAudioProcessor()
                  std::make_unique<juce::AudioParameterFloat> (juce::ParameterID { "gravity", 1 }, "Gravity", juce::NormalisableRange<float> (0.0f, 1.0f), 0.0f),
                  std::make_unique<juce::AudioParameterFloat> (juce::ParameterID { "energy", 1 }, "Energy", juce::NormalisableRange<float> (0.0f, 1.0f), 0.0f),
                  std::make_unique<juce::AudioParameterFloat> (juce::ParameterID { "mix", 1 }, "Mix", juce::NormalisableRange<float> (0.0f, 1.0f), 0.0f),
-                 std::make_unique<juce::AudioParameterFloat> (juce::ParameterID { "output", 1 }, "Output", juce::NormalisableRange<float> (0.0f, 2.0f), 1.0f)
+                 std::make_unique<juce::AudioParameterFloat> (juce::ParameterID { "output", 1 }, "Output", juce::NormalisableRange<float> (0.0f, 2.0f), 2.0f)
              })
 {
     state.state.addChild ({ "uiState", { { "width",  400 }, { "height", 200 } }, {} }, -1, nullptr);
@@ -75,12 +75,13 @@ void JuceDemoPluginAudioProcessor::prepareToPlay (double newSampleRate, int samp
     gravitySmoother.setCurrentAndTargetValue (0.0f);
     energySmoother.setCurrentAndTargetValue (0.0f);
     mixSmoother.setCurrentAndTargetValue (0.0f);
-    outputSmoother.setCurrentAndTargetValue (1.0f);
+    outputSmoother.setCurrentAndTargetValue (2.0f);
     
     // Prepare DSP modules
     granularEngine.prepare (processSpec);
     spectralEngine.prepare (processSpec);
     binauralFlow.prepare (processSpec);  // После Granular, перед Reverb
+    harmonicGlide.prepare (processSpec);  // Психоакустический кирпич для Platina
     spaceEngine.prepare (processSpec);
     dynamicLayer.prepare (processSpec);
     motionMod.prepare (processSpec);
@@ -98,6 +99,7 @@ void JuceDemoPluginAudioProcessor::reset()
     granularEngine.reset();
     spectralEngine.reset();
     binauralFlow.reset();
+    harmonicGlide.reset();
     spaceEngine.reset();
     dynamicLayer.reset();
     motionMod.reset();

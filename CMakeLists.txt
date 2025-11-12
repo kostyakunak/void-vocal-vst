@@ -37,13 +37,13 @@ add_subdirectory("${JUCE_DIR}" "${CMAKE_BINARY_DIR}/JUCE" EXCLUDE_FROM_ALL)
 # If building VST3, you may need to set VST3_SDK_DIR
 # Run: cmake -B build -DVST3_SDK_DIR=/path/to/VST3_SDK
 
-project(AudioPluginDemo VERSION 1.4.6)
+project(AudioPluginDemo VERSION 1.6.0)
 
 # `juce_add_plugin` adds a static library target with the name passed as the first argument.
 # This function accepts many optional arguments. Check the readme at `docs/CMake API.md` in the JUCE repo.
 
 juce_add_plugin(AudioPluginDemo
-    VERSION 1.4.6
+    VERSION 1.6.0
     COMPANY_NAME "JUCE"
     COMPANY_WEBSITE "http://juce.com"
     COMPANY_EMAIL ""
@@ -68,7 +68,8 @@ target_sources(AudioPluginDemo
         Source/DSP/SpaceEngine.cpp
         Source/DSP/DynamicLayer.cpp
         Source/DSP/MotionMod.cpp
-        Source/DSP/BinauralFlow.cpp)
+        Source/DSP/BinauralFlow.cpp
+        Source/DSP/HarmonicGlide.cpp)
 
 # `target_compile_definitions` adds some preprocessor definitions to our target.
 
@@ -94,6 +95,38 @@ if(APPLE AND CMAKE_GENERATOR MATCHES "Xcode")
 endif()
 
 # `target_link_libraries` links libraries and JUCE modules to other libraries or executables.
+
+# Offline renderer executable
+add_executable(offline_render
+    Source/offline_render.cpp
+    Source/OfflineRenderer.cpp
+    Source/PluginProcessor.cpp
+    Source/PluginEditor.cpp
+    Source/HelpTooltip.cpp
+    Source/DSP/GranularEngine.cpp
+    Source/DSP/SpectralEngine.cpp
+    Source/DSP/SpaceEngine.cpp
+    Source/DSP/DynamicLayer.cpp
+    Source/DSP/MotionMod.cpp
+    Source/DSP/BinauralFlow.cpp
+    Source/DSP/HarmonicGlide.cpp
+)
+
+target_link_libraries(offline_render
+    PRIVATE
+        juce::juce_audio_utils
+        juce::juce_audio_formats
+        juce::juce_audio_processors
+        juce::juce_dsp
+        juce::juce_gui_basics
+)
+
+target_compile_definitions(offline_render
+    PRIVATE
+        JUCE_WEB_BROWSER=0
+        JUCE_USE_CURL=0
+        JUCE_VST3_CAN_REPLACE_VST2=0
+)
 
 target_link_libraries(AudioPluginDemo
     PRIVATE
